@@ -1,0 +1,1 @@
+# Arian.Sample.LongRunningSQLCmdLogicApp
