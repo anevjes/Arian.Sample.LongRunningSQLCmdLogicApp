@@ -29,7 +29,6 @@ namespace LongRunningSQLCmdLogicApp
 
             Root inputData = JsonConvert.DeserializeObject<Root>(data);
 
-
             outputs.Add(await context.CallActivityAsync<string>("RunSQLStoredProc", inputData));
 
             return outputs;
@@ -39,11 +38,9 @@ namespace LongRunningSQLCmdLogicApp
         public static string RunSQLStoredProc([ActivityTrigger] Root inputData, ILogger log)
         {
 
-
-
             log.LogInformation("Running [RunSQLStoredProc] with following data: {0}, storedProc: {1}", inputData.connectionString, inputData.storedProcName);
-            //System.Threading.Thread.Sleep(30000);
 
+            string result = null;
 
             using (SqlConnection conn = new SqlConnection(inputData.connectionString))
             {
@@ -57,15 +54,18 @@ namespace LongRunningSQLCmdLogicApp
                     cmd.Parameters.Add(new SqlParameter(param.paramName, param.value));
                 }
 
+               
                 using (SqlDataReader rdr = cmd.ExecuteReader())
                 {
                     while (rdr.Read())
                     {
+                        
                         Console.WriteLine("result: {0}", rdr);
+                        result = rdr.GetString(0);  
                     }
                 }
             }
-            return $"Hello {0}!";
+            return result;
         }
 
         [FunctionName("HttpStart")]
@@ -78,8 +78,6 @@ namespace LongRunningSQLCmdLogicApp
             string requestBody = String.Empty;
 
             requestBody = await req.Content.ReadAsStringAsync();
-
-            //dynamic data = JsonConvert.DeserializeObject(requestBody);
 
             string instanceId = await starter.StartNewAsync("Orcherstrator", null, requestBody);
 
