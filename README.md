@@ -8,7 +8,8 @@ In my sample scenario, you invoke an HTTP Function which kicks off a durable orc
 1. Durable Function (Http Trigger) gets the request from Logic Apps
 2. Durable Function (Http Trigger invokes a durable orchestrator function and returns the status (202 Accepted with location header for status updates)
 3. The durable orchestrator calls the RunSQLStoredProc Function that need to do work which may be > 2 minutes
-4. The Logic App will continue to check the location header (automatically) until a 200 status code is received and successful result like below:
+4. Logic App will continue to check the location header (automatically) until a 200 status code is received.
+5. Below is a sample successful 202 result body:
 
 ```json
 {
@@ -21,16 +22,17 @@ In my sample scenario, you invoke an HTTP Function which kicks off a durable orc
 }
 ```
 
+
 ## Setup prerequisites
 
-1. Stand up an Azure function in Azure
+1. Stand up an Azure function in Azure. Enable private endpoint/vnet integration as per your organisation requirements.
 2. Enable **System Assigned Managed Idenity** on function app and grant access to SQL DB. More instructions on this step are documented here: https://docs.microsoft.com/en-us/azure/azure-functions/functions-identity-access-azure-sql-with-managed-identity
 3. Deploy the sample code.
 
 
 ## HTTP Call requirements
 
-Please ensure that form your Logic App you invoke the azure function via **HTTP Request connector** and that you supply the following body:
+Please ensure that form your Logic App Workflow you invoke the sample azure function via **HTTP Request connector** and that you supply the following body JSON:
 
 
 ```json
@@ -51,6 +53,6 @@ Please ensure that form your Logic App you invoke the azure function via **HTTP 
 ```
 
 
-Please note that the connectionString in above example is using the System assigned managed idenity - so please ensure you follow the step 2 in the prerequisite section carefully.
+Please note that the **connectionString** in above example is using the **System assigned managed idenity** - so please ensure you follow step 2 guidance in the prerequisite section carefully.
 
 As always - this is a proof of concept code - designed to highlight the principles of the pattern rather than something you deploy straight to prodution. Use at your own risk.
