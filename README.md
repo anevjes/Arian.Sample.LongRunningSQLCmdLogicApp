@@ -53,6 +53,6 @@ Please ensure that form your Logic App Workflow you invoke the sample azure func
 ```
 
 
-Please note that the **connectionString** in above example is using the **System assigned managed idenity** - so please ensure you follow step 2 guidance in the prerequisite section carefully.
+Please note that the **connectionString** in above example is using a **System assigned managed idenitty** - so please ensure you follow step 2 guidance in the prerequisite section carefully.
 
-As always - this is a proof of concept code - designed to highlight the principles of the pattern rather than something you deploy straight to prodution. Use at your own risk.
+As always - this is a proof of concept code - designed to highlight the principles of the pattern rather than something you deploy straight to prodution. **Use at your own risk.**
